@@ -1,0 +1,109 @@
+import time
+
+
+# Formulas
+idx2d = lambda r, c, C: r * C + c
+idx3d = lambda d, r, c, R, C: d * R * C + r * C + c
+
+# Dimensions
+D, R, C = 2, 2, 3  # 2 shelves, 2 rows, 3 columns
+
+# Books
+book = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+# Status: 1 = Available, 0 = Claimed
+status = [1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1]
+
+
+print("--- LCUP University Library System v1.0 ---")
+time.sleep(2)
+
+print("1D (ALL BOOKS):") # Shows all the books in 1D
+print(book)
+
+
+
+print("\n2D (ALL BOOKS IN EACH ROW):") # Shows all the books in row
+
+ROW = 4
+COLUMN = 3
+
+for r in range(ROW):
+    for c in range(COLUMN):
+        index = idx2d(r, c, COLUMN)
+        print(book[index], end=" ")
+    print()
+
+
+
+
+print("\n3D (BOOK SHELF):") # Shows all the shelves (2 shelves)
+
+for d in range(D):
+    print("Shelf", d + 1)
+
+    for r in range(R):
+        for c in range(C):
+            index = idx3d(d, r, c, R, C)
+            print(book[index], end=" ")
+        print()
+    print()
+
+
+# Student selects books 
+
+d = int(input("Choose Shelf (0 = Shelf 1 / 1 = Shelf 2): ")) # Chooses the shelf
+time.sleep(0.5)
+r = int(input("Choose Row (0 = Row 1 / 1 = Row 2): ")) # Chooses the rows of the shelf
+time.sleep(0.5)
+c = int(input("Choose Column (0 = Column 1 / 1 = Column 2/ 2= Column 3): ")) # Chooses the specific book
+time.sleep(0.5)
+
+print("Processing...")
+time.sleep(2)
+
+if 0 <= d < D and 0 <= r < R and 0 <= c < C: # Checks the input if all shelf, row, and column the student enters are correct
+
+    index = idx3d(d, r, c, R, C) # Finds the book
+
+    print("Selected Book:", book[index]) # Shows the selected book
+    print("1D Index:", index) # Shows the index
+
+    if status[index] == 1:  # Checks if the book is available
+        print("Status: Available")
+
+        claim = input("Claim this book? (yes/no): ") # Asks if the student wants to claim the book
+
+        if claim.lower() == "yes":
+            
+            print("Claiming...")
+            time.sleep(2)
+            status[index] = 0
+            print("Book", book[index], "has been claimed!")
+        else:
+            print("Book not claimed.")
+            
+            print("Claiming...")
+            time.sleep(2)
+            
+
+    else:
+        print("Status: Claimed")
+        print("This book is already claimed.")
+
+else:
+    print("Invalid shelf, row, or column.")
+
+
+
+print("\nUpdated Book Status:")
+
+for i in range(len(book)):
+    if status[i] == 1:
+        print("Book", book[i], "- Available")
+    else:
+        print("Book", book[i], "- Claimed")
+
+
+
+print("\nThank you for using LCUP'S Library Book System!")
